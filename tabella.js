@@ -1,5 +1,6 @@
 let data ;
-let nextid = 10006;
+let numero=0;
+let nextid=10021;
 
 $.ajax ({
     method:"GET",
@@ -28,24 +29,32 @@ function creaTabella() {
 //$(document).ready(function () { creaTabella(); });
 
 function aggiungi() {
-    let table = document.getElementById("prova");
-    let tbody = table.getElementsByTagName('tbody')[0];
-    let colonne = table.getElementsByTagName('th').length;
-    let tr = document.createElement('tr');
 
+    let dato1=prompt("Inserisci nome");
+    let dato2=prompt("Inserisci cognome");
+    let dato3=prompt("Inserisci sesso");
+    $.ajax ({
+        method:"POST",
+        url:"http://localhost:8080/employees",
+        contentType: "application/json; charset=utf-8",
+        data:{ 
 
-    for (let i = 0; i < colonne; i++) {
-        
-            let td = document.createElement('td');
-            let tx = document.createTextNode(prompt("Inserisci testo per cella " + (i + 1), ""));
+                 "id" : nextid,
+                "firstName": dato1,
+                "lastName": dato2,
+                "gender": dato3,
+                
+        },
+  success: function(data, textStatus, jXHR) {
+     console.log("Operazione riuscita", data, textStatus, jXHR);
+  },
+  error: function(jqXHR, textStatus, errorThrown) {
+     console.log("Operazione fallita", jqXHR, textStatus, errorThrown);  
+  }
+})
+   nextid++; 
+creaTabella();
 
-            td.appendChild(tx);
-            tr.appendChild(td);
-        
-    }
-  
-    tbody.appendChild(tr);
-  
 }
 
 function rimuovi() {
@@ -84,7 +93,7 @@ function ricercaInCol(colonna, identifica) {
     let n_colonne = table.getElementsByTagName('th').length;
     let celle = table.getElementsByTagName('td');
     let val = -1;
-
+    numero++;
 
     for (var j = (colonna - 1); j < celle.length; j = (j + n_colonne)) {
 
@@ -95,11 +104,14 @@ function ricercaInCol(colonna, identifica) {
             break;
           
         }
-
+    alert(j);
     }
-   
-   val=(val/4)+1;
-  
+    
+    if (numero==1){
+   val=4;
+    }else{
+   val=(val/4)+1+num;
+    }
    
    
     return val;
