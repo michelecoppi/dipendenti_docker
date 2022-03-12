@@ -55,14 +55,15 @@ function aggiungi() {
 
   success: function(data, textStatus, jXHR) {
      console.log("Operazione riuscita", data, textStatus, jXHR);
+     svuotaTabella();
+     getTabella();
   },
   error: function(jqXHR, textStatus, errorThrown) {
      console.log("Operazione fallita", jqXHR, textStatus, errorThrown);  
   }
 })
    
-svuotaTabella();
-getTabella();
+
 
 }
 
@@ -73,10 +74,17 @@ function rimuovi() {
     $.ajax({
         url: "http://localhost:8080/employees/"+id,
         type: 'DELETE',
+        success: function(data, textStatus, jXHR) {
+            console.log("Operazione riuscita", data, textStatus, jXHR);
+            svuotaTabella();
+            getTabella();
+           window.location.reload();
+         },
+         error: function(jqXHR, textStatus, errorThrown) {
+            console.log("Operazione fallita", jqXHR, textStatus, errorThrown);  
+         }
       });
-      svuotaTabella();
-      getTabella();
-     window.location.reload();
+    
 
 }
 function modifica() {
@@ -100,18 +108,66 @@ let dati = {
         data: JSON.stringify(dati),
         success: function(data, textStatus, jXHR) {
             console.log("Operazione riuscita", data, textStatus, jXHR);
+            svuotaTabella();
+            getTabella();
+           window.location.reload();
          },
          error: function(jqXHR, textStatus, errorThrown) {
             console.log("Operazione fallita", jqXHR, textStatus, errorThrown);  
          }
       });
-      svuotaTabella();
-       getTabella();
-      window.location.reload();
+   
 
 }
 
+
+
+
 function svuotaTabella() {
     $("#prova tr").remove();
+
+}
+
+function restituisciPagina(){
+    $.ajax ({
+        method:"GET",
+        url:"http://localhost:8080/employees"
+    })
+    .done(function(msg){
+        console.log(msg['_page'])
+        data = msg['page'];
+        JSON.stringify(data);
+      
+    })
+    return data;
+}
+
+
+function primaPagina(){
+
+}
+function prossimaPagina(){
+    $.ajax ({
+        method:"GET",
+        url:"http://localhost:8080/employees"
+    })
+    .done(function(msg){
+        console.log(msg['page']);
+        data = msg['page'];
+        console.log(data);
+    })
+}
+function precedentePagina(){
+    $.ajax ({
+        method:"GET",
+        url:"http://localhost:8080/employees"
+    })
+    .done(function(msg){
+        console.log(msg['_links']['previous']);
+        data = msg['_links'][''];
+        
+    })
+}
+function ultimaPagina(){
 
 }

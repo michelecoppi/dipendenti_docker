@@ -1,3 +1,5 @@
+
+
 h1{
 text-align: left;
 }
@@ -11,4 +13,7 @@ text-align: left;
     border: 1px solid black;
     border-collapse: collapse;
     width: 100%;  
+  }
+  .btn{
+    border-radius: 0rem;
   }
