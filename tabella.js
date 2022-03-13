@@ -18,6 +18,20 @@ $.ajax ({
 }
 
 
+function getUltimaTabella(){
+    $.ajax ({
+        method:"GET",
+        url:"http://localhost:8080/employees?page=15001"
+    })
+    .done(function(msg){
+        console.log(msg['_embedded']['employees']);
+        data = msg['_embedded']['employees'];
+        creaTabella();
+    })
+    }
+
+
+
 function creaTabella() {
     let table = "";
     $.each(data, function (chiave, valore) {
@@ -35,10 +49,19 @@ function creaTabella() {
 //$(document).ready(function () { creaTabella(); });
 
 function aggiungi() {
-
+let n1=0;
+let dato3;
     let dato1=prompt("Inserisci nome");
     let dato2=prompt("Inserisci cognome");
-    let dato3=prompt("Inserisci sesso");
+    do{
+        if(n1>0){
+            alert("Puoi inserire solo M o F");
+        }
+     dato3=prompt("Inserisci sesso");
+  
+    n1++;
+    }while(dato3!="M" && dato3!="F");
+
     let dati = {
         firstName: dato1,
         lastName: dato2,
@@ -88,10 +111,20 @@ function rimuovi() {
 
 }
 function modifica() {
+    let dato3;
+    let n1=0;
 let identifica=prompt("inserisci l'id utente da modificare");
 let dato1=prompt("Inserisci nome");
 let dato2=prompt("Inserisci cognome");
-let dato3=prompt("Inserisci sesso");
+do{
+    if(n1>0){
+        alert("Puoi inserire solo M o F");
+    }
+ dato3=prompt("Inserisci sesso");
+ 
+n1++;
+}while(dato3!="M" && dato3!="F");
+
 let dati = {
     firstName: dato1,
     lastName: dato2,
@@ -128,34 +161,17 @@ function svuotaTabella() {
 
 }
 
-function restituisciPagina(){
-    $.ajax ({
-        method:"GET",
-        url:"http://localhost:8080/employees"
-    })
-    .done(function(msg){
-        console.log(msg['_page'])
-        data = msg['page'];
-        JSON.stringify(data);
-      
-    })
-    return data;
+function numeroPagina(){
+   
 }
 
 
 function primaPagina(){
-
+    svuotaTabella();
+    getTabella();
 }
 function prossimaPagina(){
-    $.ajax ({
-        method:"GET",
-        url:"http://localhost:8080/employees"
-    })
-    .done(function(msg){
-        console.log(msg['page']);
-        data = msg['page'];
-        console.log(data);
-    })
+    
 }
 function precedentePagina(){
     $.ajax ({
@@ -169,5 +185,7 @@ function precedentePagina(){
     })
 }
 function ultimaPagina(){
+svuotaTabella();
+ getUltimaTabella();
 
 }
